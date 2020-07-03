@@ -8,6 +8,7 @@
 }
 mat-card {
   margin: 10px 0;
+  overflow: hidden;
 }
 
 mat-form-field,
@@ -17,4 +18,17 @@ textarea {
 
 .datepicker {
   width: 30%;
+}
+
+.btn-reset {
+  float: right;
+}
+
+.center {
+  background-color: red;
+  color: white;
+}
+button:disabled {
+  background-color: #ff00001f !important;
+  color: rgba(255, 0, 0, 0.466) !important;
 }
