@@ -8,7 +8,7 @@
 }
 mat-card {
   margin: 10px 0;
-  overflow: hidden;
+  overflow: auto;
 }
 
 mat-form-field,
@@ -31,4 +31,13 @@ textarea {
 button:disabled {
   background-color: #ff00001f !important;
   color: rgba(255, 0, 0, 0.466) !important;
+}
+mat-spinner {
+  position: sticky;
+  top: 100%;
+  margin: auto;
+}
+.btn {
+  width: 100%;
+  margin: 1rem 0;
 }

@@ -1,4 +1,9 @@
-<form (submit)="onSubmit(questionnaire)" #questionnaire="ngForm">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<form
+  (submit)="onSubmit(questionnaire)"
+  #questionnaire="ngForm"
+  *ngIf="!isLoading"
+>
   <mat-card
     *ngFor="let question of questions; let i = index"
     [id]="question.identifier"
@@ -92,7 +97,7 @@
     </button>
   </mat-card>
   <button
-    [ngStyle]="{ width: '100%' }"
+    class="btn"
     color="warn"
     mat-raised-button
     color="primary"

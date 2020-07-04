@@ -18,15 +18,18 @@ export class DataTableComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   allAnswers = [];
   quesAns = [];
+  isLoading;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.http
       .get<{ allUsersAnswers: [{ answers: [] }] }>(
         'http://localhost:3000/api/answers'
       )
       .subscribe((allUsersData) => {
+        this.isLoading = false;
         this.allAnswers = allUsersData.allUsersAnswers;
         let obj = {};
         // tslint:disable-next-line: forin

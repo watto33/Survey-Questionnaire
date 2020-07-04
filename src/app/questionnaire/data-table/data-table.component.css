@@ -35,3 +35,22 @@ td {
 ::ng-deep.mat-form-field-ripple {
   color: #8417a5 !important;
 }
+
+.answer-view {
+  margin-top: 6rem;
+}
+
+mat-spinner {
+  position: sticky;
+  top: 100%;
+  margin: auto;
+}
+.mat-body-2 {
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .mat-h1 {
+    font-size: 16px;
+  }
+}

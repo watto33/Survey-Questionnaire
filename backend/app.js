@@ -2,14 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const questions = require("./questionnaire.json");
-const Answer = require("./models/answer");
+const questionnaireRoutes = require("./routes/questionnaire");
 
 const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://watto:w1bfnZoRL8TWj7ro@cluster0-urvyj.mongodb.net/questionnaire",
+    "mongodb+srv://watto:w1bfnZoRL8TWj7ro@cluster0-urvyj.mongodb.net/testqu",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
@@ -32,36 +31,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/api/questions", (req, res, next) => {
-  res.status(200).json({
-    message: "Questions fetched successfully!",
-    questions: questions,
-  });
-});
-
-app.get("/api/answers", (req, res, next) => {
-  Answer.find().then((documents) => {
-    // console.log(documents);
-    res.status(200).json({
-      allUsersAnswers: documents,
-    });
-  });
-});
-
-app.post("/api/answers", (req, res, next) => {
-  const answersData = new Answer({
-    answers: req.body,
-  });
-  answersData
-    .save()
-    .then(() => {
-      res.status(201).json({
-        message: "Answer submitted successfully",
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+app.use(questionnaireRoutes);
 
 module.exports = app;

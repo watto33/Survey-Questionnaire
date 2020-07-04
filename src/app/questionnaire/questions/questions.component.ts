@@ -14,12 +14,16 @@ export class QuestionsComponent implements OnInit, OnDestroy {
   questionnaire: Questionnaire;
   quesSubscription: Subscription;
 
+  isLoading;
+
   ngOnInit(): void {
+    this.isLoading = true;
     this.quesService.getQuestionnaire();
     this.quesSubscription = this.quesService
       .getQuestionnaireUpdateListner()
       .subscribe((questionnaire: Questionnaire) => {
         this.questionnaire = questionnaire;
+        this.isLoading = false;
       });
   }
 

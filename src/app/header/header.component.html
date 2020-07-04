@@ -1,3 +1,13 @@
 <mat-toolbar color="primary" class="header">
-  <span>Questionnaire</span>
+  <span>
+    <a routerLink="/">Questionnaire</a>
+  </span>
+  <span class="spacer"></span>
+  <ul>
+    <li>
+      <a routerLink="/questions" mat-button routerLinkActive="mat-accent"
+        >Take survey</a
+      >
+    </li>
+  </ul>
 </mat-toolbar>

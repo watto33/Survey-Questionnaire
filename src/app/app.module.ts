@@ -1,3 +1,4 @@
+import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,12 +16,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { DataTableComponent } from './questionnaire/data-table/data-table.component';
 import { QuestionComponent } from './questionnaire/question/question.component';
 import { QuestionsComponent } from './questionnaire/questions/questions.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +32,14 @@ import { QuestionsComponent } from './questionnaire/questions/questions.componen
     QuestionComponent,
     HeaderComponent,
     DataTableComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    AppRoutingModule,
     MatCardModule,
     MatRadioModule,
     MatFormFieldModule,
@@ -47,6 +52,7 @@ import { QuestionsComponent } from './questionnaire/questions/questions.componen
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -3,6 +3,8 @@ import { QuestionnaireService } from '../questionnaire.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatRadioChange, MatRadioButton } from '@angular/material/radio';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/dialog/dialog.component';
 
 @Component({
   selector: 'app-question',
@@ -13,16 +15,22 @@ export class QuestionComponent implements OnInit, OnDestroy {
   questions = [];
   answers = [];
 
+  isLoading;
   quesSubscription: Subscription;
 
-  constructor(private quesService: QuestionnaireService) {}
+  constructor(
+    private quesService: QuestionnaireService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.quesService.getQuestionnaire();
     this.quesSubscription = this.quesService
       .getQuestionnaireUpdateListner()
       .subscribe((questionnaire) => {
         this.questions = questionnaire.questions;
+        this.isLoading = false;
       });
   }
 
@@ -40,5 +48,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     this.quesService.onPushAnswer(form, this.questions);
+    form.resetForm();
+    this.answers = [];
+    const dialogRef = this.dialog.open(DialogComponent, {
+      disableClose: true,
+      width: '60%',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Dialog result: Your response has been recorded');
+    });
   }
 }
