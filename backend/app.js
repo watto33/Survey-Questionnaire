@@ -43,7 +43,7 @@ app.get("/api/answers", (req, res, next) => {
   Answer.find().then((documents) => {
     // console.log(documents);
     res.status(200).json({
-      answers: documents,
+      allUsersAnswers: documents,
     });
   });
 });

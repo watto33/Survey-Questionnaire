@@ -1,8 +1,9 @@
-import { Answer } from './answers.model';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Questionnaire } from './questionnaire.model';
-import { HttpClient, HttpHeaderResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
+
+import { Answer } from './answers.model';
+import { Questionnaire } from './questionnaire.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,9 @@ export class QuestionnaireService {
   private questionnaireUpdated = new Subject<Questionnaire>();
 
   private answers: Answer[];
-  private answersUpdated = new Subject<Questionnaire>();
 
   constructor(private http: HttpClient) {}
 
-  // tslint:disable-next-line: typedef
   getQuestionnaire() {
     this.http
       .get<{ message: string; questions: { questionnaire: Questionnaire } }>(
@@ -28,7 +27,6 @@ export class QuestionnaireService {
       });
   }
 
-  // tslint:disable-next-line: typedef
   getQuestionnaireUpdateListner() {
     return this.questionnaireUpdated.asObservable();
   }
@@ -58,14 +56,4 @@ export class QuestionnaireService {
         console.log(responseData.message);
       });
   }
-
-  getAnswers() {
-    return this.answers;
-  }
-
-  getUpdatedAnswers() {
-    return this.answersUpdated.asObservable();
-  }
-
-  getAllAnswers() {}
 }
