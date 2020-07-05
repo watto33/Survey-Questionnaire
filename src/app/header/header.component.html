@@ -4,7 +4,7 @@
   </span>
   <span class="spacer"></span>
   <ul>
-    <li *ngIf="userIsAuthenticated">
+    <li *ngIf="userIsAuthenticated && !surveyIsAttempted">
       <a routerLink="/questions" mat-button routerLinkActive="mat-accent"
         >Take survey</a
       >

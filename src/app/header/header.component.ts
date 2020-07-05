@@ -10,20 +10,30 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated;
   private authListenerSubscription: Subscription;
-
+  private surveyListenerSubscription: Subscription;
+  surveyIsAttempted;
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
+    this.surveyIsAttempted = this.authService.getSurveyStatus();
     this.authListenerSubscription = this.authService
       .getAuthStatusListener()
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
+        this.surveyIsAttempted = this.authService.getSurveyStatus();
+      });
+
+    this.surveyListenerSubscription = this.authService
+      .getSurveyStatusListener()
+      .subscribe((surveyIsAttempted) => {
+        this.surveyIsAttempted = surveyIsAttempted;
       });
   }
 
   ngOnDestroy() {
     this.authListenerSubscription.unsubscribe();
+    this.surveyListenerSubscription.unsubscribe();
   }
 
   onLogout() {

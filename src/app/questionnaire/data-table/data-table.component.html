@@ -1,5 +1,15 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
+
 <div class="answer-view" *ngIf="!isLoading">
+  <p
+    class="mat-h2"
+    *ngIf="surveyStatus && userIsAuthenticated"
+    style="text-align: center;"
+  >
+    You have already submitted the response.
+  </p>
+  <br />
+
   <p class="mat-h1">
     Total number of submissions: {{ dataSource?.data.length }}
   </p>
@@ -50,5 +60,9 @@
 ></mat-paginator>
 
 <p *ngIf="dataSource?.data.length == 0" class="mat-body-2">
-  No submissions till now. Login to submit your response
+  {{
+    !userIsAuthenticated
+      ? "No submissions till now. Login to submit your response"
+      : "No submissions till now. Take survey to submit your response"
+  }}
 </p>

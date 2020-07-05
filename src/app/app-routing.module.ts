@@ -1,3 +1,4 @@
+import { QuestionnaireGuard } from './questionnaire/questionnaire.guard';
 import { AuthGuard } from './auth/auth.guard';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -11,7 +12,7 @@ const routes: Routes = [
   {
     path: 'questions',
     component: QuestionsComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, QuestionnaireGuard],
   },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
@@ -19,6 +20,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard],
+  providers: [AuthGuard, QuestionnaireGuard],
 })
 export class AppRoutingModule {}

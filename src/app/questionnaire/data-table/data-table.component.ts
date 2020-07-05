@@ -1,17 +1,25 @@
+import { AuthService } from './../../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css'],
 })
-export class DataTableComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+export class DataTableComponent implements OnInit, OnDestroy {
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable) table: MatTable<any>;
 
   displayedColumns = [];
@@ -20,7 +28,12 @@ export class DataTableComponent implements OnInit {
   quesAns = [];
   isLoading;
 
-  constructor(private http: HttpClient) {}
+  userIsAuthenticated;
+  private authListenerSubscription: Subscription;
+  surveyStatus;
+  surveyStatusListnerSubscription: Subscription;
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -34,7 +47,8 @@ export class DataTableComponent implements OnInit {
         let obj = {};
         // tslint:disable-next-line: forin
         for (const singleUserAnswer in this.allAnswers) {
-          for (const quesAnsObj of this.allAnswers[singleUserAnswer].answers) {
+          for (const quesAnsObj of this.allAnswers[singleUserAnswer]
+            .userAnswers) {
             if (quesAnsObj.answer === undefined) {
               quesAnsObj.answer = 'Not Answered';
             }
@@ -43,13 +57,27 @@ export class DataTableComponent implements OnInit {
           this.quesAns.push(obj);
           obj = {};
         }
-        this.dataSource = new MatTableDataSource(this.quesAns);
-        for (const v in this.quesAns[0]) {
-          this.displayedColumns.push(v);
+        for (const question in this.quesAns[0]) {
+          this.displayedColumns.push(question);
         }
+        this.dataSource = new MatTableDataSource(this.quesAns);
 
-        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      });
+
+    this.surveyStatus = this.authService.getSurveyStatus();
+    this.surveyStatusListnerSubscription = this.authService
+      .getSurveyStatusListener()
+      .subscribe((surveyStatus) => {
+        this.surveyStatus = surveyStatus;
+      });
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authListenerSubscription = this.authService
+      .getAuthStatusListener()
+      .subscribe((isAuthenticated) => {
+        this.userIsAuthenticated = isAuthenticated;
+        this.surveyStatus = this.authService.getSurveyStatus();
       });
   }
 
@@ -59,5 +87,10 @@ export class DataTableComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  ngOnDestroy() {
+    this.surveyStatusListnerSubscription.unsubscribe();
+    this.authListenerSubscription.unsubscribe();
   }
 }

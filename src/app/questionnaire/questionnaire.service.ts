@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -15,7 +16,7 @@ export class QuestionnaireService {
 
   private answers: Answer[];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getQuestionnaire() {
     this.http
@@ -55,6 +56,8 @@ export class QuestionnaireService {
       )
       .subscribe((responseData) => {
         console.log(responseData.message);
+        this.authService.setSurveyStatus(true);
+        localStorage.setItem('surveyStatus', 'true');
       });
   }
 }

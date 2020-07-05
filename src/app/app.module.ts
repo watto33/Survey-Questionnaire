@@ -1,3 +1,4 @@
+import { QuestionnaireGuard } from './questionnaire/questionnaire.guard';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
