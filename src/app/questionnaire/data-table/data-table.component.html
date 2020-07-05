@@ -39,7 +39,9 @@
 </div>
 
 <mat-paginator
-  [ngStyle]="{ opacity: isLoading || dataSource?.data.length == 0 ? 0 : 1 }"
+  [ngStyle]="{
+    display: isLoading || dataSource?.data.length == 0 ? 'none' : 'block'
+  }"
   style="width: 90%; margin: auto;"
   [length]="dataSource?.data.length"
   [pageSize]="5"

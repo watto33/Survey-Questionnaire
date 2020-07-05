@@ -1,5 +1,6 @@
+import { AuthInterceptor } from './auth/auth-interceptor';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,6 +25,8 @@ import { DataTableComponent } from './questionnaire/data-table/data-table.compon
 import { QuestionComponent } from './questionnaire/question/question.component';
 import { QuestionsComponent } from './questionnaire/questions/questions.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,8 @@ import { DialogComponent } from './dialog/dialog.component';
     HeaderComponent,
     DataTableComponent,
     DialogComponent,
+    LoginComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,9 @@ import { DialogComponent } from './dialog/dialog.component';
     MatProgressSpinnerModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

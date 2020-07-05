@@ -2,10 +2,11 @@ const express = require("express");
 
 const questions = require("../questionnaire.json");
 const Answer = require("../models/answer");
+const isAuth = require("../middlewares/isAuth");
 
 const router = express.Router();
 
-router.get("/api/questions", (req, res, next) => {
+router.get("/api/questions", isAuth, (req, res, next) => {
   res.status(200).json({
     message: "Questions fetched successfully!",
     questions: questions,
@@ -21,7 +22,7 @@ router.get("/api/answers", (req, res, next) => {
   });
 });
 
-router.post("/api/answers", (req, res, next) => {
+router.post("/api/answers", isAuth, (req, res, next) => {
   const answersData = new Answer({
     answers: req.body,
   });
