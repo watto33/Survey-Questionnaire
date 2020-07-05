@@ -1,3 +1,5 @@
+import { ErrorComponent } from './error/error.component';
+import { ErrorInterceptor } from './error-interceptor';
 import { QuestionnaireGuard } from './questionnaire/questionnaire.guard';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { AppRoutingModule } from './app-routing.module';
@@ -39,6 +41,7 @@ import { SignupComponent } from './auth/signup/signup.component';
     DialogComponent,
     LoginComponent,
     SignupComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,9 @@ import { SignupComponent } from './auth/signup/signup.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
+  // entryComponents: [ErrorComponent],
 })
 export class AppModule {}

@@ -23,7 +23,9 @@ router.get("/api/answers", (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json({
+        message: "Something went wrong.! Please try again",
+      });
     });
 });
 

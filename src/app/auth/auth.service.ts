@@ -18,11 +18,14 @@ export class AuthService {
 
   createUser(email: string, password: string) {
     const authData: AuthData = { email, password };
-    this.http
-      .post('http://localhost:3000/api/auth/signup', authData)
-      .subscribe((responseData) => {
+    this.http.post('http://localhost:3000/api/auth/signup', authData).subscribe(
+      (responseData) => {
         this.router.navigate(['/login']);
-      });
+      },
+      (err) => {
+        this.authStatusListner.next(false);
+      }
+    );
   }
 
   login(email: string, password: string) {
@@ -34,24 +37,29 @@ export class AuthService {
         userId: string;
         surveyStatus: boolean;
       }>('http://localhost:3000/api/auth/login', authData)
-      .subscribe((responseData) => {
-        this.token = responseData.token;
-        if (this.token) {
-          const expiresIn = responseData.expiresIn;
-          this.setAuthTimer(expiresIn);
-          this.isAuthenticated = true;
-          this.userId = responseData.userId;
-          this.surveyStatus = responseData.surveyStatus;
-          this.surveyStatusListner.next(this.surveyStatus);
-          this.authStatusListner.next(true);
-          const currentDateTime = new Date();
-          const expirationDate = new Date(
-            currentDateTime.getTime() + expiresIn * 1000
-          );
-          this.saveAuthData(this.token, expirationDate, this.surveyStatus);
-          this.router.navigate(['/']);
+      .subscribe(
+        (responseData) => {
+          this.token = responseData.token;
+          if (this.token) {
+            const expiresIn = responseData.expiresIn;
+            this.setAuthTimer(expiresIn);
+            this.isAuthenticated = true;
+            this.userId = responseData.userId;
+            this.surveyStatus = responseData.surveyStatus;
+            this.surveyStatusListner.next(this.surveyStatus);
+            this.authStatusListner.next(true);
+            const currentDateTime = new Date();
+            const expirationDate = new Date(
+              currentDateTime.getTime() + expiresIn * 1000
+            );
+            this.saveAuthData(this.token, expirationDate, this.surveyStatus);
+            this.router.navigate(['/']);
+          }
+        },
+        (err) => {
+          this.authStatusListner.next(false);
         }
-      });
+      );
   }
 
   autoLogin() {
