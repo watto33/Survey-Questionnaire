@@ -1,0 +1,8 @@
+{
+  "env": {
+    "DB_USER": "watto",
+    "DB_PWD": "w1bfnZoRL8TWj7ro",
+    "DB_NAME": "testqu",
+    "JWT_TOKEN": "secret_key_which_is_used_moreover_like_private_key"
+  }
+}

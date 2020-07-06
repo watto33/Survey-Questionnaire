@@ -29,7 +29,7 @@ exports.postAnswer = async (req, res, next) => {
     let userData = {
       id: req.userData.userId,
       question: "Name",
-      answer: user.email,
+      answer: user.name,
     };
     req.body.unshift(userData);
     const answersData = new Answer({

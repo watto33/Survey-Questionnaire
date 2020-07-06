@@ -9,7 +9,7 @@ const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://watto:w1bfnZoRL8TWj7ro@cluster0-urvyj.mongodb.net/testqu",
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PWD}@cluster0-urvyj.mongodb.net/${process.env.DB_NAME}`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
