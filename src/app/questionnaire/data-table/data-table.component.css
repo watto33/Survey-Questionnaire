@@ -12,8 +12,7 @@ td {
   text-align: center !important;
 }
 th:first-child {
-  /* text-align: left !important; */
-  padding-left: 6rem !important;
+  padding-left: 1.5rem !important;
 }
 
 .parent-table {

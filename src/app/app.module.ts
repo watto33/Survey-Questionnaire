@@ -8,11 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { QuestionnaireModule } from './questionnaire/questionnaire.module';
 
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './auth/auth-interceptor';
 import { DialogComponent } from './dialog/dialog.component';
-import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { HeaderComponent } from './header/header.component';
+
+import { ErrorInterceptor } from './error-interceptor';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [

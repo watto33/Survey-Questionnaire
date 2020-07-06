@@ -1,17 +1,13 @@
-import { environment } from './../../../environments/environment';
-import { AuthService } from './../../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  ViewChild,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
+
+import { environment } from './../../../environments/environment';
+
+import { AuthService } from './../../auth/auth.service';
 
 @Component({
   selector: 'app-data-table',
@@ -36,7 +32,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
   REQUEST_URL = environment.url + 'questionnaire/';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isLoading = true;
     this.http
       .get<{ allUsersAnswers: [{ answers: [] }] }>(`${this.REQUEST_URL}answers`)
@@ -56,6 +52,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
           this.quesAns.push(obj);
           obj = {};
         }
+        // tslint:disable-next-line: forin
         for (const question in this.quesAns[0]) {
           this.displayedColumns.push(question);
         }

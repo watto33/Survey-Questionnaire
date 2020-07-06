@@ -1,12 +1,13 @@
-import { environment } from './../../environments/environment';
-import { AuthService } from './../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { environment } from './../../environments/environment';
+
+import { AuthService } from './../auth/auth.service';
+
 import { Answer } from './answers.model';
 import { Questionnaire } from './questionnaire.model';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',

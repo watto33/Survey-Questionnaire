@@ -1,7 +1,9 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { Questionnaire } from './../questionnaire.model';
+
 import { QuestionnaireService } from './../questionnaire.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-questions',

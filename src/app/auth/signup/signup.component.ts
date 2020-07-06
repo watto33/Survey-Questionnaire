@@ -1,7 +1,8 @@
-import { Subscription } from 'rxjs';
-import { AuthService } from './../auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { AuthService } from './../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +24,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       });
   }
 
-  onSignUp(form: NgForm) {
+  onSignUp(form: NgForm): void {
     if (form.invalid) {
       return;
     }

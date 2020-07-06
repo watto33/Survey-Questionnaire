@@ -1,9 +1,11 @@
-import { environment } from './../../environments/environment';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { AuthData } from './auth-data.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+
+import { environment } from './../../environments/environment';
+
+import { AuthData } from './auth-data.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -19,7 +21,7 @@ export class AuthService {
   surveyStatus: boolean;
   private userName;
 
-  createUser(name: string, email: string, password: string) {
+  createUser(name: string, email: string, password: string): void {
     const authData: AuthData = { name, email, password };
     this.http.post(`${this.REQUEST_URL}signup`, authData).subscribe(
       (responseData) => {
@@ -31,7 +33,7 @@ export class AuthService {
     );
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string): void {
     const authData = { email, password };
     this.http
       .post<{
@@ -72,7 +74,7 @@ export class AuthService {
       );
   }
 
-  autoLogin() {
+  autoLogin(): void {
     const authInformation = this.getAuthData();
     if (!authInformation) {
       return;
@@ -91,7 +93,7 @@ export class AuthService {
     }
   }
 
-  logout() {
+  logout(): void {
     this.token = null;
     this.isAuthenticated = false;
     this.userName = undefined;
