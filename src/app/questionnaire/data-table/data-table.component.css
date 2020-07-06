@@ -7,11 +7,15 @@ table {
 }
 th,
 td {
-  white-space: nowrap;
-
-  padding: 1rem !important;
-  text-align: center;
+  white-space: pre;
+  padding: 0.5rem !important;
+  text-align: center !important;
 }
+th:first-child {
+  /* text-align: left !important; */
+  padding-left: 6rem !important;
+}
+
 .parent-table {
   width: 100%;
   margin: auto;

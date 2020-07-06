@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthData } from './auth-data.model';
@@ -8,6 +9,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
+  REQUEST_URL = environment.url + 'auth/';
   private token;
   private isAuthenticated = false;
   private authStatusListner = new Subject<boolean>();
@@ -15,12 +17,13 @@ export class AuthService {
   private tokenTimer: any;
   private userId: string;
   surveyStatus: boolean;
+  private userName;
 
-  createUser(email: string, password: string) {
-    const authData: AuthData = { email, password };
-    this.http.post('http://localhost:3000/api/auth/signup', authData).subscribe(
+  createUser(name: string, email: string, password: string) {
+    const authData: AuthData = { name, email, password };
+    this.http.post(`${this.REQUEST_URL}signup`, authData).subscribe(
       (responseData) => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['auth/login']);
       },
       (err) => {
         this.authStatusListner.next(false);
@@ -29,14 +32,15 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    const authData: AuthData = { email, password };
+    const authData = { email, password };
     this.http
       .post<{
         token: string;
         expiresIn: number;
         userId: string;
         surveyStatus: boolean;
-      }>('http://localhost:3000/api/auth/login', authData)
+        userName: string;
+      }>(`${this.REQUEST_URL}login`, authData)
       .subscribe(
         (responseData) => {
           this.token = responseData.token;
@@ -45,6 +49,7 @@ export class AuthService {
             this.setAuthTimer(expiresIn);
             this.isAuthenticated = true;
             this.userId = responseData.userId;
+            this.userName = responseData.userName;
             this.surveyStatus = responseData.surveyStatus;
             this.surveyStatusListner.next(this.surveyStatus);
             this.authStatusListner.next(true);
@@ -52,7 +57,12 @@ export class AuthService {
             const expirationDate = new Date(
               currentDateTime.getTime() + expiresIn * 1000
             );
-            this.saveAuthData(this.token, expirationDate, this.surveyStatus);
+            this.saveAuthData(
+              this.token,
+              expirationDate,
+              this.surveyStatus,
+              this.userName
+            );
             this.router.navigate(['/']);
           }
         },
@@ -73,6 +83,7 @@ export class AuthService {
     if (expiresIn > 0) {
       this.token = authInformation.token;
       this.isAuthenticated = true;
+      this.userName = authInformation.userName;
       this.surveyStatus = JSON.parse(authInformation.surveyStatus);
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListner.next(true);
@@ -83,6 +94,7 @@ export class AuthService {
   logout() {
     this.token = null;
     this.isAuthenticated = false;
+    this.userName = undefined;
     this.authStatusListner.next(false);
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
@@ -91,6 +103,9 @@ export class AuthService {
 
   getToken() {
     return this.token;
+  }
+  getUserName() {
+    return this.userName;
   }
 
   getAuthStatusListener() {
@@ -118,22 +133,30 @@ export class AuthService {
     this.surveyStatusListner.next(this.surveyStatus);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, surveyStatus) {
+  private saveAuthData(
+    token: string,
+    expirationDate: Date,
+    surveyStatus,
+    userName: string
+  ) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('surveyStatus', surveyStatus);
+    localStorage.setItem('userName', userName);
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
     localStorage.removeItem('surveyStatus');
+    localStorage.removeItem('userName');
   }
 
   private getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const surveyStatus = localStorage.getItem('surveyStatus');
+    const userName = localStorage.getItem('userName');
     if (!token || !expirationDate) {
       return;
     }
@@ -141,6 +164,7 @@ export class AuthService {
       token: token,
       expirationDate: new Date(expirationDate),
       surveyStatus: surveyStatus,
+      userName: userName,
     };
   }
 

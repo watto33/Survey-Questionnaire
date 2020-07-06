@@ -1,11 +1,10 @@
-import { QuestionnaireGuard } from './questionnaire/questionnaire.guard';
-import { AuthGuard } from './auth/auth.guard';
-import { SignupComponent } from './auth/signup/signup.component';
-import { LoginComponent } from './auth/login/login.component';
-import { QuestionsComponent } from './questionnaire/questions/questions.component';
-import { DataTableComponent } from './questionnaire/data-table/data-table.component';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
+import { AuthGuard } from './auth/auth.guard';
+import { DataTableComponent } from './questionnaire/data-table/data-table.component';
+import { QuestionnaireGuard } from './questionnaire/questionnaire.guard';
+import { QuestionsComponent } from './questionnaire/questions/questions.component';
 
 const routes: Routes = [
   { path: '', component: DataTableComponent },
@@ -14,8 +13,10 @@ const routes: Routes = [
     component: QuestionsComponent,
     canActivate: [AuthGuard, QuestionnaireGuard],
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -31,7 +31,11 @@ export class SignupComponent implements OnInit, OnDestroy {
       alert("Password and confirm password doesn't match");
       return;
     }
-    this.authService.createUser(form.value.email, form.value.password);
+    this.authService.createUser(
+      form.value.name,
+      form.value.email,
+      form.value.password
+    );
     this.isLoading = true;
   }
 

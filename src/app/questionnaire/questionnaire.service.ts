@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { AuthService } from './../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,6 +15,8 @@ export class QuestionnaireService {
   private questionnaire: Questionnaire;
   private questionnaireUpdated = new Subject<Questionnaire>();
 
+  REQUEST_URL = environment.url + 'questionnaire/';
+
   private answers: Answer[];
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -21,7 +24,7 @@ export class QuestionnaireService {
   getQuestionnaire() {
     this.http
       .get<{ message: string; questions: { questionnaire: Questionnaire } }>(
-        'http://localhost:3000/api/questionnaire/questions'
+        `${this.REQUEST_URL}questions`
       )
       .subscribe((quesobject) => {
         this.questionnaire = quesobject.questions.questionnaire;
@@ -50,10 +53,7 @@ export class QuestionnaireService {
     });
 
     this.http
-      .post<{ message: string }>(
-        'http://localhost:3000/api/questionnaire/answers',
-        this.answers
-      )
+      .post<{ message: string }>(`${this.REQUEST_URL}answers`, this.answers)
       .subscribe((responseData) => {
         console.log(responseData.message);
         this.authService.setSurveyStatus(true);

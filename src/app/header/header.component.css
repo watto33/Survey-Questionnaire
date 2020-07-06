@@ -18,3 +18,7 @@ a {
 .spacer {
   flex: 1 1 auto;
 }
+.user-name {
+  font-size: 16px;
+  padding: 1rem;
+}

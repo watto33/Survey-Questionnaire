@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { AuthService } from './../../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -32,15 +33,13 @@ export class DataTableComponent implements OnInit, OnDestroy {
   private authListenerSubscription: Subscription;
   surveyStatus;
   surveyStatusListnerSubscription: Subscription;
-
+  REQUEST_URL = environment.url + 'questionnaire/';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit() {
     this.isLoading = true;
     this.http
-      .get<{ allUsersAnswers: [{ answers: [] }] }>(
-        'http://localhost:3000/api/questionnaire/answers'
-      )
+      .get<{ allUsersAnswers: [{ answers: [] }] }>(`${this.REQUEST_URL}answers`)
       .subscribe((allUsersData) => {
         this.isLoading = false;
         this.allAnswers = allUsersData.allUsersAnswers;
