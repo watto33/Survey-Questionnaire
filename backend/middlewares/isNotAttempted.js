@@ -1,7 +1,8 @@
-const user = require("../models/user");
+const User = require("../models/user");
 
-module.exports = (req, res, next) => {
-  user.findOne({ _id: req.userData.userId }).then((user) => {
+module.exports = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.userData.userId });
     if (user.surveyStatus) {
       return res.status(403).json({
         message: "Not Authorized",
@@ -9,5 +10,7 @@ module.exports = (req, res, next) => {
     }
     req.userData.surveyStatus = user.surveyStatus;
     next();
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };

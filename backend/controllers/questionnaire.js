@@ -9,18 +9,17 @@ exports.fetchQuestions = (req, res, next) => {
   });
 };
 
-exports.fetchAnswers = (req, res, next) => {
-  Answer.find()
-    .then((documents) => {
-      res.status(200).json({
-        allUsersAnswers: documents,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: "Something went wrong.! Please try again",
-      });
+exports.fetchAnswers = async (req, res, next) => {
+  try {
+    answers = await Answer.find();
+    res.status(200).json({
+      allUsersAnswers: answers,
     });
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong.! Please try again",
+    });
+  }
 };
 
 exports.postAnswer = async (req, res, next) => {
@@ -36,11 +35,13 @@ exports.postAnswer = async (req, res, next) => {
       userAnswers: req.body,
     });
     await answersData.save();
-    let updateStatus = await user.updateOne({ surveyStatus: true });
+    await user.updateOne({ surveyStatus: true });
     res.status(201).json({
       message: "Answer submitted successfully",
     });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      message: "Something went wrong.! Please try again",
+    });
   }
 };
