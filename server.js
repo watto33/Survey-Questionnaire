@@ -1,4 +1,4 @@
-const app = require("./app");
+const app = require("./backend/app");
 const debug = require("debug")("questionnaire");
 const http = require("http");
 
