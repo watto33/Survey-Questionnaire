@@ -39,7 +39,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.http
       .get<{ allUsersAnswers: [{ answers: [] }] }>(
-        'http://localhost:3000/api/answers'
+        'http://localhost:3000/api/questionnaire/answers'
       )
       .subscribe((allUsersData) => {
         this.isLoading = false;

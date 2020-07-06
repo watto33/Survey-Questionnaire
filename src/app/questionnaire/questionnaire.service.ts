@@ -21,7 +21,7 @@ export class QuestionnaireService {
   getQuestionnaire() {
     this.http
       .get<{ message: string; questions: { questionnaire: Questionnaire } }>(
-        'http://localhost:3000/api/questions'
+        'http://localhost:3000/api/questionnaire/questions'
       )
       .subscribe((quesobject) => {
         this.questionnaire = quesobject.questions.questionnaire;
@@ -51,7 +51,7 @@ export class QuestionnaireService {
 
     this.http
       .post<{ message: string }>(
-        'http://localhost:3000/api/answers',
+        'http://localhost:3000/api/questionnaire/answers',
         this.answers
       )
       .subscribe((responseData) => {

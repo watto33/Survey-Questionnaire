@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(questionnaireRoutes);
+app.use("/api/questionnaire", questionnaireRoutes);
 app.use("/api/auth", authRoutes);
 
 module.exports = app;
